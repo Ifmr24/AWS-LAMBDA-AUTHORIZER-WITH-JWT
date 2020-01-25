@@ -1,0 +1,20 @@
+service: aws-authorizer
+
+provider:
+    name: aws
+    runtime: nodejs10.x
+
+plugins:
+    - serverless-offline
+
+functions:
+    authorizer:
+        handler: src/authorizer.handler
+    check:
+        handler: src/check.handler
+        events:
+            - http:
+                  path: /secret
+                  method: get
+                  cors: true
+                  authorizer: authorizer
